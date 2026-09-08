@@ -1,0 +1,113 @@
+# ============================================================
+# docker-compose.yml - Módulo PostgreSQL
+# ============================================================
+# Este archivo define y orquesta dos servicios:
+#   - postgres: la base de datos
+#   - pgadmin: interfaz web para administrar la BD
+#
+# Ambos servicios comparten una red virtual personalizada
+# (bookstore-network), lo que permite que se comuniquen
+# entre sí usando el nombre del servicio como hostname.
+#
+# Uso rápido:
+#   Levantar:  docker compose up -d
+#   Detener:   docker compose down
+#   Limpiar:   docker compose down -v
+# ============================================================
+
+services:
+
+  # ----------------------------------------------------------
+  # SERVICIO 1: PostgreSQL
+  # ----------------------------------------------------------
+  postgres:
+    image: postgres:16                      # Imagen oficial de Docker Hub
+    container_name: bookstore-postgres      # Nombre fijo del contenedor
+    restart: unless-stopped                 # Reinicia automáticamente salvo parada manual
+
+    environment:                            # Variables de entorno (leídas desde .env)
+      POSTGRES_USER:     ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB:       ${POSTGRES_DB}
+
+    ports:
+      # HOST_PORT:CONTAINER_PORT
+      # El host expone el puerto definido en .env → el contenedor siempre usa 5432
+      - "${POSTGRES_PORT}:5432"
+
+    volumes:
+      # VOLUMEN NOMBRADO: persiste los datos de la BD entre reinicios
+      # Docker gestiona dónde se almacena físicamente en el host
+      - pgdata:/var/lib/postgresql/data
+
+      # BIND MOUNT: monta la carpeta local ./init dentro del contenedor
+      # Todo .sql en /docker-entrypoint-initdb.d/ se ejecuta al primer arranque
+      - ./init:/docker-entrypoint-initdb.d/
+
+    networks:
+      - bookstore-network                   # Se conecta a nuestra red personalizada
+
+    healthcheck:                            # Verificación de salud del servicio
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ----------------------------------------------------------
+  # SERVICIO 2: pgAdmin (interfaz web para PostgreSQL)
+  # ----------------------------------------------------------
+  pgadmin:
+    image: dpage/pgadmin4:latest            # Imagen oficial de pgAdmin
+    container_name: bookstore-pgadmin
+    restart: unless-stopped
+
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+
+    ports:
+      # Accedemos a pgAdmin desde el navegador en: http://localhost:8080
+      - "${PGADMIN_PORT}:80"
+
+    volumes:
+      # Persiste la configuración de pgAdmin (servidores guardados, preferencias)
+      - pgadmin-data:/var/lib/pgadmin
+
+    networks:
+      - bookstore-network                   # Misma red → puede alcanzar a "postgres" por hostname
+
+    depends_on:
+      postgres:
+        condition: service_healthy          # Espera que postgres esté sano antes de arrancar
+
+
+# ============================================================
+# REDES
+# ============================================================
+# Definimos una red bridge personalizada.
+# Sin esta configuración, Docker crearía una red por defecto
+# con un nombre generado automáticamente.
+# Con nombre propio tenemos:
+#   - Resolución DNS entre servicios (postgres ↔ pgadmin)
+#   - Aislamiento respecto a otros contenedores del host
+#   - Posibilidad de conectar contenedores externos a esta red
+# ============================================================
+networks:
+  bookstore-network:
+    driver: bridge                          # Tipo de red más común para desarrollo local
+    name: bookstore-network                 # Nombre explícito (sin prefijo de proyecto)
+
+
+# ============================================================
+# VOLÚMENES
+# ============================================================
+# Los volúmenes nombrados son gestionados por Docker.
+# Se crean la primera vez y persisten aunque el contenedor
+# se detenga o se elimine.
+# Para ELIMINARLOS: docker compose down -v
+# ============================================================
+volumes:
+  pgdata:
+    name: bookstore-pgdata                  # Nombre explícito del volumen en el host
+  pgadmin-data:
+    name: bookstore-pgadmin-data
