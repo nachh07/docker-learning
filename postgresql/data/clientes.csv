@@ -1,0 +1,21 @@
+id,nombre,email,ciudad,pais,fecha_registro
+1,Ana García,ana.garcia@mail.com,Buenos Aires,Argentina,2025-01-10
+2,Carlos Mendoza,c.mendoza@mail.com,Córdoba,Argentina,2025-01-15
+3,Lucía Fernández,lu.fernandez@mail.com,Rosario,Argentina,2025-01-22
+4,Martín Quiroga,m.quiroga@mail.com,Mendoza,Argentina,2025-02-03
+5,Valentina Torres,v.torres@mail.com,Santiago,Chile,2025-02-08
+6,Diego Ríos,d.rios@mail.com,Valparaíso,Chile,2025-02-14
+7,Sofía Almeida,s.almeida@mail.com,Lima,Perú,2025-02-20
+8,Nicolás Paredes,n.paredes@mail.com,Bogotá,Colombia,2025-03-01
+9,Camila Rojas,c.rojas@mail.com,Medellín,Colombia,2025-03-05
+10,Andrés Castillo,a.castillo@mail.com,Montevideo,Uruguay,2025-03-12
+11,Florencia Pinto,f.pinto@mail.com,Buenos Aires,Argentina,2025-03-18
+12,Sebastián Vera,s.vera@mail.com,Tucumán,Argentina,2025-03-25
+13,Mariana López,m.lopez@mail.com,Asunción,Paraguay,2025-04-02
+14,Tomás Herrera,t.herrera@mail.com,Quito,Ecuador,2025-04-08
+15,Gabriela Soto,g.soto@mail.com,La Paz,Bolivia,2025-04-15
+16,Federico Morales,f.morales@mail.com,Buenos Aires,Argentina,2025-04-20
+17,Daniela Cruz,d.cruz@mail.com,Córdoba,Argentina,2025-04-28
+18,Pablo Núñez,p.nunez@mail.com,Ciudad de México,México,2025-05-03
+19,Romina Acosta,r.acosta@mail.com,Rosario,Argentina,2025-05-10
+20,Agustín Romero,a.romero@mail.com,Mar del Plata,Argentina,2025-05-17
