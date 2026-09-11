@@ -19,16 +19,21 @@ Aprenderás a levantar una base de datos PostgreSQL real usando Docker, con una 
 
 ```
 postgresql/
-├── .env                  → Variables de entorno (usuario, contraseña, puertos)
-├── docker-compose.yml    → Definición de los servicios
+├── README.md                    ← Guía completa del módulo PostgreSQL
+├── docker-compose.yml           ← PostgreSQL + pgAdmin con red personalizada
+├── .env                         ← Variables de entorno
 ├── init/
-│   ├── 01_schema.sql     → Se ejecuta al primer arranque: crea las tablas
-│   └── 02_seed.sql       → Se ejecuta al primer arranque: inserta datos
+│   ├── 01_schema.sql            ← Creación de tablas (auto-ejecutado)
+│   └── 02_seed.sql              ← Datos de ejemplo (auto-ejecutado)
+├── data/
+│   ├── clientes.csv             ← Datos sintéticos de clientes
+│   └── pedidos.csv              ← Datos sintéticos de pedidos
 └── ejercicios/
-    ├── 01_volumenes.md
-    ├── 02_puertos.md
-    ├── 03_comandos.md
-    └── 04_redes.md
+    ├── 01_volumenes.md          ← Ejercicio: Volúmenes
+    ├── 02_puertos.md            ← Ejercicio: Puertos
+    ├── 03_comandos.md           ← Ejercicio: Comandos básicos
+    ├── 04_redes.md              ← Ejercicio: Redes
+    └── 05_datos_externos.md     ← Ejercicio: Carga de CSV desde volumen
 ```
 
 ---
@@ -141,3 +146,4 @@ Completá los ejercicios en orden dentro de la carpeta `ejercicios/`:
 2. [02 - Puertos](./ejercicios/02_puertos.md)
 3. [03 - Comandos básicos](./ejercicios/03_comandos.md)
 4. [04 - Redes](./ejercicios/04_redes.md)
+5. [05 - Datos externos (CSV desde volumen)](./ejercicios/05_datos_externos.md)

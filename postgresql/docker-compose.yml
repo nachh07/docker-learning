@@ -44,6 +44,11 @@ services:
       # Todo .sql en /docker-entrypoint-initdb.d/ se ejecuta al primer arranque
       - ./init:/docker-entrypoint-initdb.d/
 
+      # BIND MOUNT: monta la carpeta local ./data dentro del contenedor en /data
+      # Usada para cargar archivos CSV externos con el comando COPY de PostgreSQL
+      # Los archivos que agregues en ./data estarán disponibles en /data sin reiniciar
+      - ./data:/data
+
     networks:
       - bookstore-network                   # Se conecta a nuestra red personalizada
 
